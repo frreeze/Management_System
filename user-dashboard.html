@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LabOS · 设备使用者</title>
+  <meta name="description" content="设备使用者工作台 - 设备查询、预约与管理" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/user.css" />
+  <link rel="stylesheet" href="css/ai.css" />
+</head>
+<body class="app-body">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <div class="logo-icon-sm">
+          <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+            <rect width="32" height="32" rx="10" fill="url(#lgSm)"/>
+            <path d="M8 16h4M12 12v8M16 10v12M20 14v4" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+            <defs><linearGradient id="lgSm" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#007AFF"/><stop offset="1" stop-color="#5856D6"/></linearGradient></defs>
+          </svg>
+        </div>
+        <span class="sidebar-brand">LabOS</span>
+      </div>
+      <button class="sidebar-toggle" id="sidebarToggle">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+      </button>
+    </div>
+
+    <div class="user-profile-mini">
+      <div class="avatar-wrapper">
+        <div class="avatar" id="userAvatar">张</div>
+        <div class="avatar-status online"></div>
+      </div>
+      <div class="user-info">
+        <p class="user-name" id="sidebarUserName">张同学</p>
+        <p class="user-role-badge user">设备使用者</p>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <ul>
+        <li class="nav-item active" data-page="overview">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          <span>概览</span>
+        </li>
+        <li class="nav-item" data-page="devices">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4m0 0h18"/></svg>
+          <span>设备浏览</span>
+        </li>
+        <li class="nav-item" data-page="book">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/></svg>
+          <span>预约申请</span>
+          <span class="nav-badge" id="pendingBadge">2</span>
+        </li>
+        <li class="nav-item" data-page="checkin">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <span>签到/签退</span>
+        </li>
+        <li class="nav-item" data-page="history">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>历史记录</span>
+        </li>
+        <li class="nav-item" data-page="notifications">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span>通知</span>
+          <span class="nav-badge alert" id="notifBadge">3</span>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="nav-item logout-btn" id="logoutBtn">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        <span>退出登录</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content" id="mainContent">
+    <!-- Top Bar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <h2 class="page-title" id="pageTitle">概览</h2>
+        <div class="breadcrumb" id="breadcrumb">
+          <span>首页</span>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="search-bar">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" placeholder="搜索设备、预约..." id="globalSearch" />
+        </div>
+        <button class="icon-btn" id="topNotifBtn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="icon-badge">3</span>
+        </button>
+        <div class="avatar-btn" id="topUserAvatar">张</div>
+      </div>
+    </header>
+
+    <!-- Pages Container -->
+    <div class="pages-container">
+
+      <!-- Page: Overview -->
+      <section class="page" id="page-overview">
+        <div class="welcome-banner glass-card">
+          <div class="welcome-text">
+            <h3>你好，张同学 👋</h3>
+            <p>今日共有 <strong>12</strong> 台设备可用，您有 <strong>1</strong> 条审核结果待查看</p>
+          </div>
+          <div class="welcome-actions">
+            <button class="btn-primary" onclick="switchPage('book')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+              新建预约
+            </button>
+          </div>
+          <div class="welcome-decoration"></div>
+        </div>
+
+        <!-- Stats Row -->
+        <div class="stats-row">
+          <div class="stat-card glass-card">
+            <div class="stat-icon blue">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <div class="stat-info">
+              <p class="stat-value" id="stat-total">24</p>
+              <p class="stat-label">本月预约总次数</p>
+            </div>
+            <div class="stat-trend up">↑ 12%</div>
+          </div>
+          <div class="stat-card glass-card">
+            <div class="stat-icon green">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <div class="stat-info">
+              <p class="stat-value" id="stat-approved">21</p>
+              <p class="stat-label">已通过</p>
+            </div>
+            <div class="stat-trend up">↑ 5%</div>
+          </div>
+          <div class="stat-card glass-card">
+            <div class="stat-icon orange">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div class="stat-info">
+              <p class="stat-value" id="stat-pending">2</p>
+              <p class="stat-label">待审核</p>
+            </div>
+          </div>
+          <div class="stat-card glass-card">
+            <div class="stat-icon purple">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="stat-info">
+              <p class="stat-value" id="stat-hours">48h</p>
+              <p class="stat-label">本月使用时长</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Content Grid -->
+        <div class="content-grid">
+          <!-- Upcoming Reservations -->
+          <div class="card glass-card">
+            <div class="card-header">
+              <h4>近期预约</h4>
+              <button class="text-btn" onclick="switchPage('book')">查看全部</button>
+            </div>
+            <div class="reservation-list" id="upcomingList">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+
+          <!-- Available Devices -->
+          <div class="card glass-card">
+            <div class="card-header">
+              <h4>热门设备</h4>
+              <button class="text-btn" onclick="switchPage('devices')">查看全部</button>
+            </div>
+            <div class="device-quick-list" id="popularDevices">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Notifications Preview -->
+        <div class="card glass-card">
+          <div class="card-header">
+            <h4>最新通知</h4>
+            <button class="text-btn" onclick="switchPage('notifications')">全部通知</button>
+          </div>
+          <div class="notif-list" id="notifPreview"></div>
+        </div>
+      </section>
+
+      <!-- Page: Device Browse -->
+      <section class="page hidden" id="page-devices">
+        <div class="filter-bar glass-card">
+          <div class="filter-group">
+            <label>分类</label>
+            <div class="segmented-control" id="catFilter">
+              <button class="seg-btn active" data-val="all">全部</button>
+              <button class="seg-btn" data-val="precision">精密仪器</button>
+              <button class="seg-btn" data-val="chemical">化学分析</button>
+              <button class="seg-btn" data-val="mechanical">机械加工</button>
+              <button class="seg-btn" data-val="electrical">电子电气</button>
+            </div>
+          </div>
+          <div class="filter-group">
+            <label>状态</label>
+            <select class="filter-select" id="statusFilter">
+              <option value="all">全部状态</option>
+              <option value="available">可用</option>
+              <option value="busy">使用中</option>
+              <option value="maintenance">维修中</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>危险等级</label>
+            <select class="filter-select" id="levelFilter">
+              <option value="all">全部</option>
+              <option value="normal">普通</option>
+              <option value="high">高危</option>
+            </select>
+          </div>
+          <div class="view-toggle">
+            <button class="view-btn active" data-view="grid" id="gridViewBtn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            </button>
+            <button class="view-btn" data-view="list" id="listViewBtn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="device-grid" id="deviceGrid">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- Page: Book -->
+      <section class="page hidden" id="page-book">
+        <div class="page-two-col">
+          <!-- Left: Reservations List -->
+          <div class="col-main">
+            <div class="section-header">
+              <h3>我的预约</h3>
+              <button class="btn-primary btn-sm" id="newBookBtn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                新建预约
+              </button>
+            </div>
+            <div class="tab-strip" id="bookTabStrip">
+              <button class="tab-btn active" data-status="all">全部</button>
+              <button class="tab-btn" data-status="pending">待审核</button>
+              <button class="tab-btn" data-status="approved">已通过</button>
+              <button class="tab-btn" data-status="rejected">已拒绝</button>
+              <button class="tab-btn" data-status="cancelled">已取消</button>
+            </div>
+            <div class="book-list" id="bookList"></div>
+          </div>
+
+          <!-- Right: Detail Panel -->
+          <div class="col-side glass-card" id="bookDetailPanel">
+            <div class="detail-placeholder" id="detailPlaceholder">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.3"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>
+              <p>选择预约查看详情</p>
+            </div>
+            <div class="detail-content hidden" id="bookDetailContent"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Page: Check-in -->
+      <section class="page hidden" id="page-checkin">
+        <div class="checkin-layout">
+          <div class="checkin-card glass-card">
+            <h3>今日预约签到</h3>
+            <p class="checkin-sub">选择您今日的预约记录进行签到确认</p>
+            <div class="todays-list" id="todaysList"></div>
+          </div>
+          <div class="checkin-panel glass-card" id="checkinPanel">
+            <div class="qr-placeholder">
+              <div class="qr-box" id="qrBox">
+                <div class="qr-animation">
+                  <div class="qr-corner tl"></div>
+                  <div class="qr-corner tr"></div>
+                  <div class="qr-corner bl"></div>
+                  <div class="qr-corner br"></div>
+                  <div class="qr-scan-line"></div>
+                </div>
+              </div>
+              <p>扫描二维码签到</p>
+              <button class="btn-primary" id="manualCheckinBtn">手动签到</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Page: History -->
+      <section class="page hidden" id="page-history">
+        <div class="card glass-card">
+          <div class="card-header">
+            <h4>预约历史记录</h4>
+            <div class="header-actions">
+              <input type="month" class="filter-select" id="historyMonth" />
+              <button class="btn-outline btn-sm" id="exportBtn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                导出记录
+              </button>
+            </div>
+          </div>
+          <table class="data-table" id="historyTable">
+            <thead>
+              <tr>
+                <th>设备名称</th>
+                <th>预约时间</th>
+                <th>实际时长</th>
+                <th>用途</th>
+                <th>设备状态</th>
+                <th>审核状态</th>
+              </tr>
+            </thead>
+            <tbody id="historyBody"></tbody>
+          </table>
+          <div class="pagination" id="historyPagination"></div>
+        </div>
+      </section>
+
+      <!-- Page: Notifications -->
+      <section class="page hidden" id="page-notifications">
+        <div class="notif-page-layout">
+          <div class="notif-list-full glass-card" id="notifListFull"></div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Modals -->
+  <!-- Book New Modal -->
+  <div class="modal-overlay hidden" id="bookModal">
+    <div class="modal glass-card">
+      <div class="modal-header">
+        <h3>新建预约申请</h3>
+        <button class="modal-close" id="closeBookModal">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="bookForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">选择设备 *</label>
+              <select class="form-input" id="bookDevice" required>
+                <option value="">请选择设备...</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">使用日期 *</label>
+              <input type="date" class="form-input" id="bookDate" required />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">开始时间 *</label>
+              <input type="time" class="form-input" id="bookStart" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">预计时长 *</label>
+              <select class="form-input" id="bookDuration" required>
+                <option value="">选择时长</option>
+                <option value="1">1 小时</option>
+                <option value="2">2 小时</option>
+                <option value="3">3 小时</option>
+                <option value="4">4 小时</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">使用用途 *</label>
+            <select class="form-input" id="bookPurpose" required>
+              <option value="">请选择用途...</option>
+              <option value="course">课程实验</option>
+              <option value="research">科研项目</option>
+              <option value="graduation">毕业设计</option>
+              <option value="competition">学科竞赛</option>
+              <option value="other">其他</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">详细说明</label>
+            <textarea class="form-input form-textarea" id="bookDesc" placeholder="请简要描述使用目的及计划..." rows="3"></textarea>
+          </div>
+          <div class="form-group" id="certGroup">
+            <label class="form-label">操作资质证明</label>
+            <div class="upload-area" id="certUpload">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <p>点击或拖拽上传证明文件</p>
+              <span>支持 PDF、JPG、PNG，最大 10MB</span>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-outline" id="cancelBookBtn">取消</button>
+        <button class="btn-primary" id="submitBookBtn">提交申请</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Device Detail Modal -->
+  <div class="modal-overlay hidden" id="deviceModal">
+    <div class="modal modal-lg glass-card">
+      <button class="modal-close" id="closeDeviceModal">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div id="deviceDetailContent"></div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/user.js"></script>
+  <script src="js/ai.js"></script>
+  <script src="js/ai-planner.js"></script>
+</body>
+</html>

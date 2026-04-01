@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LabOS · 系统管理员</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/sysadmin.css" />
+  <link rel="stylesheet" href="css/ai.css" />
+</head>
+<body class="app-body sysadmin-theme">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <div class="logo-icon-sm sys-logo">
+          <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+            <rect width="32" height="32" rx="10" fill="url(#lgSys)"/>
+            <path d="M8 16h4M12 12v8M16 10v12M20 14v4" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+            <defs><linearGradient id="lgSys" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#FF9F0A"/><stop offset="1" stop-color="#FF375F"/></linearGradient></defs>
+          </svg>
+        </div>
+        <span class="sidebar-brand">LabOS</span>
+      </div>
+    </div>
+
+    <div class="user-profile-mini">
+      <div class="avatar-wrapper">
+        <div class="avatar sys-avatar">王</div>
+        <div class="avatar-status online"></div>
+      </div>
+      <div class="user-info">
+        <p class="user-name">王系统员</p>
+        <p class="user-role-badge sysadmin">系统管理员</p>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <p class="nav-section-label">系统管理</p>
+      <ul>
+        <li class="nav-item active" data-page="overview"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg><span>系统概览</span></li>
+        <li class="nav-item" data-page="users"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>用户管理</span></li>
+        <li class="nav-item" data-page="permissions"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span>权限配置</span></li>
+        <li class="nav-item" data-page="audit-log"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg><span>操作日志</span><span class="nav-badge alert">!</span></li>
+      </ul>
+      <p class="nav-section-label">系统配置</p>
+      <ul>
+        <li class="nav-item" data-page="settings"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg><span>系统设置</span></li>
+        <li class="nav-item" data-page="integration"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg><span>系统集成</span></li>
+        <li class="nav-item" data-page="backup"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.51"/></svg><span>备份与恢复</span></li>
+      </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="nav-item logout-btn" id="logoutBtn">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        <span>退出登录</span>
+      </button>
+    </div>
+  </aside>
+
+  <main class="main-content" id="mainContent">
+    <header class="topbar">
+      <div class="topbar-left">
+        <h2 class="page-title" id="pageTitle">系统概览</h2>
+      </div>
+      <div class="topbar-right">
+        <div class="system-status" id="systemStatus">
+          <div class="status-dot online"></div>
+          <span>系统运行正常</span>
+        </div>
+        <div class="avatar-btn sys-avatar">王</div>
+      </div>
+    </header>
+
+    <div class="pages-container">
+      <!-- Overview -->
+      <section class="page" id="page-overview">
+        <div class="sys-metrics-row">
+          <div class="sys-metric glass-card">
+            <div class="metric-ring" id="cpuRing">
+              <svg viewBox="0 0 100 100"><circle class="ring-bg" cx="50" cy="50" r="40" fill="none" stroke-width="8"/><circle class="ring-fill cpu" cx="50" cy="50" r="40" fill="none" stroke-width="8" stroke-dasharray="251" stroke-dashoffset="50" stroke-linecap="round"/></svg>
+              <div class="ring-val">80%</div>
+            </div>
+            <p class="metric-name">CPU 使用率</p>
+          </div>
+          <div class="sys-metric glass-card">
+            <div class="metric-ring">
+              <svg viewBox="0 0 100 100"><circle class="ring-bg" cx="50" cy="50" r="40" fill="none" stroke-width="8"/><circle class="ring-fill mem" cx="50" cy="50" r="40" fill="none" stroke-width="8" stroke-dasharray="251" stroke-dashoffset="100" stroke-linecap="round"/></svg>
+              <div class="ring-val">60%</div>
+            </div>
+            <p class="metric-name">内存使用率</p>
+          </div>
+          <div class="sys-metric glass-card">
+            <div class="metric-ring">
+              <svg viewBox="0 0 100 100"><circle class="ring-bg" cx="50" cy="50" r="40" fill="none" stroke-width="8"/><circle class="ring-fill disk" cx="50" cy="50" r="40" fill="none" stroke-width="8" stroke-dasharray="251" stroke-dashoffset="160" stroke-linecap="round"/></svg>
+              <div class="ring-val">36%</div>
+            </div>
+            <p class="metric-name">磁盘使用率</p>
+          </div>
+          <div class="sys-stat-card glass-card">
+            <div class="sys-stat-header">
+              <span>系统信息</span>
+              <div class="status-dot online"></div>
+            </div>
+            <div class="sys-stat-list">
+              <div class="sys-stat-item"><span>版本</span><span>v2.6.1</span></div>
+              <div class="sys-stat-item"><span>在线用户</span><span class="badge-green">127</span></div>
+              <div class="sys-stat-item"><span>今日请求</span><span>48,392</span></div>
+              <div class="sys-stat-item"><span>运行时长</span><span>72d 14h</span></div>
+              <div class="sys-stat-item"><span>上次备份</span><span>2h前</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-grid">
+          <div class="card glass-card">
+            <div class="card-header"><h4>异常操作预警</h4><span class="badge-pill red">3</span></div>
+            <div class="alert-list" id="sysAlertList"></div>
+          </div>
+          <div class="card glass-card">
+            <div class="card-header"><h4>最近操作日志</h4><button class="text-btn" onclick="switchPage('audit-log')">查看全部</button></div>
+            <div class="log-list" id="recentLogList"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Users -->
+      <section class="page hidden" id="page-users">
+        <div class="table-toolbar">
+          <div class="toolbar-left">
+            <div class="search-bar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" placeholder="搜索用户..." id="userSearch" /></div>
+            <select class="filter-select" id="roleFilter"><option value="all">全部角色</option><option value="user">设备使用者</option><option value="admin">设备管理员</option><option value="sysadmin">系统管理员</option></select>
+            <select class="filter-select" id="userStatusFilter"><option value="all">全部状态</option><option value="active">正常</option><option value="disabled">已禁用</option></select>
+          </div>
+          <button class="btn-primary btn-sm" id="addUserBtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg> 新增用户</button>
+        </div>
+        <div class="card glass-card" style="margin-top:0">
+          <table class="data-table">
+            <thead><tr><th>用户名</th><th>姓名</th><th>角色</th><th>部门</th><th>状态</th><th>最后登录</th><th>操作</th></tr></thead>
+            <tbody id="userBody"></tbody>
+          </table>
+          <div class="pagination" id="userPagination"></div>
+        </div>
+      </section>
+
+      <!-- Permissions -->
+      <section class="page hidden" id="page-permissions">
+        <div class="perm-layout glass-card">
+          <div class="perm-roles">
+            <h4>角色列表</h4>
+            <div class="role-list">
+              <div class="role-item active" data-role="user"><span>设备使用者</span><span class="badge-pill blue">3</span></div>
+              <div class="role-item" data-role="admin"><span>实验室设备管理员</span><span class="badge-pill green">12</span></div>
+              <div class="role-item" data-role="sysadmin"><span>系统管理员</span><span class="badge-pill orange">2</span></div>
+            </div>
+          </div>
+          <div class="perm-matrix" id="permMatrix">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Audit Log -->
+      <section class="page hidden" id="page-audit-log">
+        <div class="card glass-card">
+          <div class="card-header">
+            <h4>操作审计日志</h4>
+            <div class="header-actions">
+              <input type="date" class="filter-select" id="logDate" />
+              <select class="filter-select" id="logType"><option value="all">全部操作</option><option value="login">登录</option><option value="book">预约</option><option value="device">设备操作</option><option value="user">用户管理</option></select>
+              <button class="btn-outline btn-sm" id="exportLogBtn">导出</button>
+            </div>
+          </div>
+          <table class="data-table" id="auditLogTable">
+            <thead><tr><th>时间</th><th>用户</th><th>IP地址</th><th>操作类型</th><th>操作详情</th><th>状态</th></tr></thead>
+            <tbody id="auditLogBody"></tbody>
+          </table>
+          <div class="pagination" id="logPagination"></div>
+        </div>
+      </section>
+
+      <!-- Settings -->
+      <section class="page hidden" id="page-settings">
+        <div class="settings-layout">
+          <div class="settings-group glass-card">
+            <h4>通知设置</h4>
+            <div class="setting-item">
+              <div class="setting-info"><p class="setting-name">短信通知</p><p class="setting-desc">预约审核结果通过短信发送给用户</p></div>
+              <div class="toggle-switch" id="smsToggle"><div class="toggle-thumb"></div></div>
+            </div>
+            <div class="setting-item">
+              <div class="setting-info"><p class="setting-name">系统消息</p><p class="setting-desc">在系统内发送消息通知</p></div>
+              <div class="toggle-switch active" id="sysNotifToggle"><div class="toggle-thumb"></div></div>
+            </div>
+            <div class="setting-item">
+              <div class="setting-info"><p class="setting-name">邮件通知</p><p class="setting-desc">重要事项通过邮件发送</p></div>
+              <div class="toggle-switch active" id="emailToggle"><div class="toggle-thumb"></div></div>
+            </div>
+          </div>
+          <div class="settings-group glass-card">
+            <h4>数据备份</h4>
+            <div class="setting-item">
+              <div class="setting-info"><p class="setting-name">自动备份频率</p></div>
+              <select class="filter-select" style="width: auto"><option>每天</option><option>每周</option><option>每月</option></select>
+            </div>
+            <div class="setting-item">
+              <div class="setting-info"><p class="setting-name">日志保存周期</p></div>
+              <select class="filter-select" style="width: auto"><option>90天</option><option>180天</option><option>1年</option><option>永久</option></select>
+            </div>
+            <button class="btn-primary" id="backupNowBtn" style="margin-top:16px">立即备份</button>
+          </div>
+          <div class="settings-group glass-card">
+            <h4>预约规则全局设置</h4>
+            <div class="setting-item">
+              <div class="setting-info"><p class="setting-name">最短提前预约时间</p></div>
+              <div class="num-setting"><input type="number" class="form-input" value="2" style="width:80px" /> <span>小时</span></div>
+            </div>
+            <div class="setting-item">
+              <div class="setting-info"><p class="setting-name">取消预约截止时间</p></div>
+              <div class="num-setting"><input type="number" class="form-input" value="2" style="width:80px" /> <span>小时前</span></div>
+            </div>
+            <div class="setting-item">
+              <div class="setting-info"><p class="setting-name">未签到自动取消时间</p></div>
+              <div class="num-setting"><input type="number" class="form-input" value="15" style="width:80px" /> <span>分钟</span></div>
+            </div>
+            <button class="btn-primary" style="margin-top:16px">保存设置</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Integration -->
+      <section class="page hidden" id="page-integration">
+        <div class="integration-grid">
+          <div class="integration-card glass-card connected">
+            <div class="intg-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.08 13 19.79 19.79 0 0 1 1 4.18 2 2 0 0 1 2.96 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9.14a16 16 0 0 0 6.95 6.95l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+            <div class="intg-info"><h5>校园统一身份认证</h5><p>CAS / OAuth 2.0</p></div>
+            <span class="intg-status connected">已连接</span>
+          </div>
+          <div class="integration-card glass-card connected">
+            <div class="intg-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+            <div class="intg-info"><h5>财务系统</h5><p>设备价值核算对接</p></div>
+            <span class="intg-status connected">已连接</span>
+          </div>
+          <div class="integration-card glass-card">
+            <div class="intg-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>
+            <div class="intg-info"><h5>教务系统</h5><p>课程实验需求同步</p></div>
+            <span class="intg-status">未连接</span>
+            <button class="btn-outline btn-sm" style="margin-top:8px">配置</button>
+          </div>
+          <div class="integration-card glass-card">
+            <div class="intg-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
+            <div class="intg-info"><h5>短信平台</h5><p>预约通知短信发送</p></div>
+            <span class="intg-status">未连接</span>
+            <button class="btn-outline btn-sm" style="margin-top:8px">配置</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Backup -->
+      <section class="page hidden" id="page-backup">
+        <div class="backup-layout">
+          <div class="card glass-card">
+            <div class="card-header"><h4>备份记录</h4><button class="btn-primary btn-sm" id="createBackupBtn">创建备份</button></div>
+            <table class="data-table">
+              <thead><tr><th>备份名称</th><th>类型</th><th>大小</th><th>创建时间</th><th>状态</th><th>操作</th></tr></thead>
+              <tbody id="backupBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- User Form Modal -->
+  <div class="modal-overlay hidden" id="userFormModal">
+    <div class="modal glass-card">
+      <div class="modal-header">
+        <h3 id="userFormTitle">新增用户</h3>
+        <button class="modal-close" id="closeUserFormModal"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </div>
+      <div class="modal-body">
+        <form id="userForm">
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">用户名 *</label><input type="text" class="form-input" id="newUsername" placeholder="工号/学号" required /></div>
+            <div class="form-group"><label class="form-label">真实姓名 *</label><input type="text" class="form-input" id="newRealName" required /></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">角色 *</label><select class="form-input" id="newRole" required><option value="user">设备使用者</option><option value="admin">实验室设备管理员</option><option value="sysadmin">系统管理员</option></select></div>
+            <div class="form-group"><label class="form-label">部门</label><input type="text" class="form-input" id="newDept" placeholder="如：计算机学院" /></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">初始密码 *</label><input type="password" class="form-input" id="newPassword" required /></div>
+            <div class="form-group"><label class="form-label">手机号</label><input type="tel" class="form-input" id="newPhone" /></div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-outline" id="cancelUserFormBtn">取消</button>
+        <button class="btn-primary" id="saveUserBtn">创建用户</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/sysadmin.js"></script>
+  <script src="js/ai.js"></script>
+</body>
+</html>
